@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome, <span id="welcome-name"></span>!</h1>
+    <p>You are logged in.</p>
+    <button id="logout-btn">Logout</button>
+  </div>
+
+  <script>
+    async function init() {
+      const response = await fetch("/api/me");
+      if (!response.ok) {
+        window.location.replace("/login.html");
+        return;
+      }
+      const data = await response.json();
+      document.getElementById("welcome-name").textContent = data.username;
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", async function () {
+      await fetch("/api/logout", { method: "POST" });
+      window.location.replace("/login.html");
+    });
+
+    init();
+  </script>
+</body>
+</html>
